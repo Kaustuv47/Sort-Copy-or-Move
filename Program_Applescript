@@ -1,0 +1,351 @@
+on run {input, parameters}
+	-- Variable to count loop
+	set x to 0
+	-- ASK SYSTEM FOR USERNAME
+	tell application "System Events"
+		set UserName to name of current user
+	end tell
+	set feed to the button returned of (display dialog "Mr. " & UserName & " Do you want to Copy Items or Move!" with icon caution buttons {"Copy", "Move", "Do Nothing!"})
+	-- Copying Part
+	if (feed = "Copy") then
+		repeat with f in input
+			-- Counting Loops
+			set x to (x + 1)
+			-- Loop start
+			set infilepath to (f as alias)'s POSIX path
+			-- infilepath ------ PATH TO THE CURRENT OPERATIONAL FILE
+			set fn to name of (info for infilepath)
+			-- fn ------ ONLY FILE NAME OF CURRENT TASK
+			set infile to (POSIX file infilepath) as string
+			-- infile ------- COLON REPRESENTATION OF PATH OF CURRENT OPERATION
+			
+			
+			-- Checking and sorting file IMAGES
+			if infile contains ".jpg" or infile contains ".scpt" or infile contains ".jpeg" or infile contains ".png" or infile contains ".bmp" or infile contains ".gif" or infile contains ".tif" or infile contains ".tiff" then
+				-- picfol COLON REPRESENTRATION OF DESTINATION FOLDER
+				set picfol to ("Macintosh HD:Users:" & UserName & ":Pictures") as string
+				-- End sorting
+				-- Getting Username
+				tell application "Finder"
+					set fileName to ("Macintosh HD:Users:" & UserName & ":Pictures:" & fn)
+				end tell
+				-- Finish
+				
+				-- Checking existance of file
+				tell application "System Events"
+					if exists file fileName then
+						set answer to the button returned of (display dialog "Mr. " & UserName & ", Element " & fn & " already present in destination folder! Do you want to Replace it?" with icon stop button {"Nope", "Replace"})
+						-- If exist then ask
+						if (answer = "Replace") then
+							-- Delete File
+							tell application "Finder"
+								delete (every item of folder (path to pictures folder) whose name begins with fn)
+							end tell
+							-- Copy file
+							tell application "Finder"
+								copy file infile to folder picfol
+							end tell
+						end if
+						-- End if
+						-- If not found any file then copy only
+					else
+						tell application "Finder"
+							copy file infile to folder picfol
+						end tell
+					end if
+					-- End id
+				end tell
+				-- Task complete
+				
+				
+				-- Checking and sorting file VIDEOS	
+			else if infile contains ".wbem" or infile contains ".mkv" or infile contains ".flv" or infile contains ".vob" or infile contains ".ogg" or infile contains ".mov" or infile contains ".avi" or infile contains ".mpeg" or infile contains ".wmv" or infile contains ".3gp" then
+				-- mofol COLON REPRESENTRATION OF DESTINATION FOLDER
+				set mofol to ("Macintosh HD:Users:" & UserName & ":Movies") as string
+				-- End sorting
+				-- Getting Username
+				tell application "Finder"
+					set fileName to ("Macintosh HD:Users:" & UserName & ":Movies:" & fn)
+				end tell
+				-- Finish
+				
+				-- Checking existance of file
+				tell application "System Events"
+					if exists file fileName then
+						set answer to the button returned of (display dialog "Mr. " & UserName & ", Element " & fn & " already present in destination folder! Do you want to Replace it?" with icon stop button {"Nope", "Replace"})
+						-- If exist then ask
+						if (answer = "Replace") then
+							-- Delete File
+							tell application "Finder"
+								delete (every item of folder (path to movies folder) whose name begins with fn)
+							end tell
+							-- Copy file
+							tell application "Finder"
+								copy file infile to folder mofol
+							end tell
+						end if
+						-- End if
+						-- If not found any file then copy only
+					else
+						tell application "Finder"
+							copy file infile to folder mofol
+						end tell
+					end if
+					-- End id
+				end tell
+				-- Task complete
+				
+				
+				-- Checking and sorting file AUDIO	
+			else if infile contains ".aa" or infile contains ".aac" or infile contains ".m4a" or infile contains ".mp3" or infile contains ".vox" or infile contains ".wav" or infile contains ".wma" or infile contains ".m4p" then
+				-- mufol COLON REPRESENTRATION OF DESTINATION FOLDER
+				set mufol to ("Macintosh HD:Users:" & UserName & ":Music") as string
+				-- End sorting
+				-- Getting Username
+				tell application "Finder"
+					set fileName to ("Macintosh HD:Users:" & UserName & ":Music:" & fn)
+				end tell
+				-- Finish
+				
+				-- Checking existance of file
+				tell application "System Events"
+					if exists file fileName then
+						set answer to the button returned of (display dialog "Mr. " & UserName & ", Element " & fn & " already present in destination folder! Do you want to Replace it?" with icon stop button {"Nope", "Replace"})
+						-- If exist then ask
+						if (answer = "Replace") then
+							-- Delete File
+							tell application "Finder"
+								delete (every item of folder (path to music folder) whose name begins with fn)
+							end tell
+							-- Copy file
+							tell application "Finder"
+								copy file infile to folder mufol
+							end tell
+						end if
+						-- End if
+						-- If not found any file then copy only
+					else
+						tell application "Finder"
+							copy file infile to folder mufol
+						end tell
+					end if
+					-- End id
+				end tell
+				-- Task complete
+				
+				-- Checking and sorting PDF	
+			else if infile contains ".pdf" then
+				-- docfol COLON REPRESENTRATION OF DESTINATION FOLDER
+				set docfol to ("Macintosh HD:Users:" & UserName & ":Documents") as string
+				-- End sorting
+				-- Getting Username
+				tell application "Finder"
+					set fileName to ("Macintosh HD:Users:" & UserName & ":Documents:" & fn)
+				end tell
+				-- Finish
+				
+				-- Checking existance of file
+				tell application "System Events"
+					if exists file fileName then
+						set answer to the button returned of (display dialog "Mr. " & UserName & ", Element " & fn & " already present in destination folder! Do you want to Replace it?" with icon stop button {"Nope", "Replace"})
+						-- If exist then ask
+						if (answer = "Replace") then
+							-- Delete File
+							tell application "Finder"
+								delete (every item of folder (path to documents folder) whose name begins with fn)
+							end tell
+							-- Copy file
+							tell application "Finder"
+								copy file infile to folder docfol
+							end tell
+						end if
+						-- End if
+						-- If not found any file then copy only
+					else
+						tell application "Finder"
+							copy file infile to folder docfol
+						end tell
+					end if
+					-- End id
+				end tell
+				-- Task complete
+				
+			end if
+		end repeat
+		
+		-- Notification
+		display notification "Copying (" & x & ") files successfully done!" with title "File Services" subtitle "File Processing" sound name "Sosumi"
+		
+		-- Moving Part
+	else if (feed = "Move") then
+		repeat with f in input
+			-- Counting Loops
+			set x to (x + 1)
+			-- Loop start
+			set infilepath to (f as alias)'s POSIX path
+			-- infilepath ------ PATH TO THE CURRENT OPERATIONAL FILE
+			set fn to name of (info for infilepath)
+			-- fn ------ ONLY FILE NAME OF CURRENT TASK
+			set infile to (POSIX file infilepath) as string
+			-- infile ------- COLON REPRESENTATION OF PATH OF CURRENT OPERATION
+			-- ASK SYSTEM FOR USERNAME
+			tell application "System Events"
+				set UserName to name of current user
+			end tell
+			
+			-- Checking and sorting file IMAGES
+			if infile contains ".jpg" or infile contains ".scpt" or infile contains ".jpeg" or infile contains ".png" or infile contains ".bmp" or infile contains ".gif" or infile contains ".tif" or infile contains ".tiff" then
+				-- picfol COLON REPRESENTRATION OF DESTINATION FOLDER
+				set picfol to ("Macintosh HD:Users:" & UserName & ":Pictures") as string
+				-- End sorting
+				-- Getting Username
+				tell application "Finder"
+					set fileName to ("Macintosh HD:Users:" & UserName & ":Pictures:" & fn)
+				end tell
+				-- Finish
+				
+				-- Checking existance of file
+				tell application "System Events"
+					if exists file fileName then
+						set answer to the button returned of (display dialog "Mr. " & UserName & ", Element \"" & fn & "\" already present in destination folder! Do you want to Replace it?" with title "Sort and move" with icon stop button {"Nope", "Replace"})
+						-- If exist then ask
+						if (answer = "Replace") then
+							-- Delete File
+							tell application "Finder"
+								delete (every item of folder (path to pictures folder) whose name begins with fn)
+							end tell
+							-- move file
+							tell application "Finder"
+								move file infile to folder picfol
+							end tell
+						end if
+						-- End if
+						-- If not found any file then move only
+					else
+						tell application "Finder"
+							move file infile to folder picfol
+						end tell
+					end if
+					-- End id
+				end tell
+				-- Task complete
+				
+				
+				-- Checking and sorting file VIDEOS	
+			else if infile contains ".wbem" or infile contains ".mp4" or infile contains ".mkv" or infile contains ".flv" or infile contains ".vob" or infile contains ".ogg" or infile contains ".mov" or infile contains ".avi" or infile contains ".mpeg" or infile contains ".wmv" or infile contains ".3gp" then
+				-- mofol COLON REPRESENTRATION OF DESTINATION FOLDER
+				set mofol to ("Macintosh HD:Users:" & UserName & ":Movies") as string
+				-- End sorting
+				-- Getting Username
+				tell application "Finder"
+					set fileName to ("Macintosh HD:Users:" & UserName & ":Movies:" & fn)
+				end tell
+				-- Finish
+				
+				-- Checking existance of file
+				tell application "System Events"
+					if exists file fileName then
+						set answer to the button returned of (display dialog "Mr. " & UserName & ", Element \"" & fn & "\" already present in destination folder! Do you want to Replace it?" with title "Sort and move" with icon stop button {"Nope", "Replace"})
+						-- If exist then ask
+						if (answer = "Replace") then
+							-- Delete File
+							tell application "Finder"
+								delete (every item of folder (path to movies folder) whose name begins with fn)
+							end tell
+							-- move file
+							tell application "Finder"
+								move file infile to folder mofol
+							end tell
+						end if
+						-- End if
+						-- If not found any file then move only
+					else
+						tell application "Finder"
+							move file infile to folder mofol
+						end tell
+					end if
+					-- End id
+				end tell
+				-- Task complete
+				
+				
+				-- Checking and sorting file AUDIO	
+			else if infile contains ".aa" or infile contains ".aac" or infile contains ".m4a" or infile contains ".mp3" or infile contains ".vox" or infile contains ".wav" or infile contains ".wma" or infile contains ".m4p" then
+				-- mufol COLON REPRESENTRATION OF DESTINATION FOLDER
+				set mufol to ("Macintosh HD:Users:" & UserName & ":Music") as string
+				-- End sorting
+				-- Getting Username
+				tell application "Finder"
+					set fileName to ("Macintosh HD:Users:" & UserName & ":Music:" & fn)
+				end tell
+				-- Finish
+				
+				-- Checking existance of file
+				tell application "System Events"
+					if exists file fileName then
+						set answer to the button returned of (display dialog "Mr. " & UserName & ", Element \"" & fn & "\" already present in destination folder! Do you want to Replace it?" with title "Sort and move" with icon stop button {"Nope", "Replace"})
+						-- If exist then ask
+						if (answer = "Replace") then
+							-- Delete File
+							tell application "Finder"
+								delete (every item of folder (path to music folder) whose name begins with fn)
+							end tell
+							-- move file
+							tell application "Finder"
+								move file infile to folder mufol
+							end tell
+						end if
+						-- End if
+						-- If not found any file then move only
+					else
+						tell application "Finder"
+							move file infile to folder mufol
+						end tell
+					end if
+					-- End id
+				end tell
+				-- Task complete
+				
+				-- Checking and sorting PDF	
+			else if infile contains ".pdf" then
+				-- docfol COLON REPRESENTRATION OF DESTINATION FOLDER
+				set docfol to ("Macintosh HD:Users:" & UserName & ":Documents") as string
+				-- End sorting
+				-- Getting Username
+				tell application "Finder"
+					set fileName to ("Macintosh HD:Users:" & UserName & ":Documents:" & fn)
+				end tell
+				-- Finish
+				
+				-- Checking existance of file
+				tell application "System Events"
+					if exists file fileName then
+						set answer to the button returned of (display dialog "Mr. " & UserName & ", Element \"" & fn & "\" already present in destination folder! Do you want to Replace it?" with title "Sort and move" with icon stop button {"Nope", "Replace"})
+						-- If exist then ask
+						if (answer = "Replace") then
+							-- Delete File
+							tell application "Finder"
+								delete (every item of folder (path to documents folder) whose name begins with fn)
+							end tell
+							-- move file
+							tell application "Finder"
+								move file infile to folder docfol
+							end tell
+						end if
+						-- End if
+						-- If not found any file then move only
+					else
+						tell application "Finder"
+							move file infile to folder docfol
+						end tell
+					end if
+					-- End id
+				end tell
+				-- Task complete
+				
+			end if
+		end repeat
+		-- Notification
+		display notification "Copying (" & x & ") files successfully done!" with title "File Services" subtitle "File Processing" sound name "Sosumi"
+	end if
+end run
